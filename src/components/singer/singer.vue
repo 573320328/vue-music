@@ -7,6 +7,7 @@
 <script type="text/ecmascript-6">
   import {getSingerList} from "api/singer";
   import {ERR_OK} from 'api/config'
+  import Singer from 'common/js/singer'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LENGTH = 10
@@ -23,7 +24,8 @@
       _getSingerList() {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
-            console.log(res.data.list)
+            console.log(res.data)
+            console.log(this._normalizeSinger(this.singers))
             this.singers = res.data.list
           }
         })
@@ -37,10 +39,24 @@
         }
         list.forEach((item, index) => {
           if (index < HOT_SINGER_LENGTH) {
-              map.hot.item.push({
-                
-              })
+            map.hot.item.push(
+              new Singer({
+                id: item.fSinger_mid,
+                name: item.Fsinger_name
+              }))
           }
+          const key = item.Findex
+          if (!map[key]) {
+            map[key] = {
+              title: key,
+              items: []
+            }
+          }
+          map[key].items.push(
+            new Singer({
+              id: item.fSinger_mid,
+              name: item.Fsinger_name
+            }))
         })
       }
     }
