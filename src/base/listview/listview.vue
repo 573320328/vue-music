@@ -5,7 +5,7 @@
       <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
+          <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
             <img v-lazy="item.avatar" class="avatar" alt=""/>
             <span class="name">{{item.name}}</span>
           </li>
@@ -72,6 +72,10 @@
       }
     },
     methods: {
+      selectItem(item) {
+        this.$emit('select', item)
+      },
+
       scroll(pos) {
         this.scrollY = pos.y
       },
